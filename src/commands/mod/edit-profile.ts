@@ -15,7 +15,6 @@ export default class ProfileCommand extends Command {
 
     async run(msg: CommandMessage, args: string[] | string) {
         const u = msg.author;
-        const gm = msg.guild.members.get(u.id)!;
         const newProfile = {
             ...this.client.provider.get("global", `${u.id}.profile`),
         };

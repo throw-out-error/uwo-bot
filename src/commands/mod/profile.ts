@@ -9,11 +9,11 @@ export default class ProfileCommand extends Command {
             group: "mod",
             memberName: "profile",
             description: "shows you information about the user specified.",
+            argsType: "multiple",
         });
     }
 
     async run(msg: CommandMessage, args: string[]) {
-        if (typeof args === "string") args = [args];
         // console.log(args.map((v) => v.replace(/<@!?|>/g, "")));
         const u: User | undefined =
             args[0] && args[0].length > 0

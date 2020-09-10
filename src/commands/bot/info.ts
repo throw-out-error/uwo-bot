@@ -15,10 +15,7 @@ export default class InfoCommand extends Command {
     async run(msg: CommandMessage, args: string[]) {
         const apiPing = Math.round(this.client.ping); // This will round the api ping of the client
         const responseTime = Math.round(Date.now() - msg.createdTimestamp); // This will round the response time between when the message was received and when the message was sent
-        const elapTime = process.hrtime();
         const elapUsage = process.cpuUsage();
-
-        const elapTimeMS = elapTime[0] * 1000 + elapTime[1] / 1000000;
 
         const elapUserMS = elapUsage.user / 1000; // microseconds to milliseconds
         const elapSystMS = elapUsage.system / 1000;
