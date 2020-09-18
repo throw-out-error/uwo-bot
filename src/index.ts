@@ -6,7 +6,6 @@ import { config } from "./config";
 const bot: CommandoClient = new CommandoClient({
     commandPrefix: config.prefix,
     commandEditableDuration: 10,
-    disableEveryone: true,
     invite: config.supportServerInvite,
     owner: config.owners,
 });
@@ -25,7 +24,7 @@ bot.registry
     });
 // .registerTypesIn(path.join(__dirname, "types"));
 
-sqlite
+(sqlite as any)
     .open(path.join(__dirname, "/../../database.sqlite3"))
     .then((database) => {
         bot.setProvider(new SQLiteProvider(database));
@@ -35,7 +34,7 @@ sqlite
     });
 
 bot.on("ready", async () => {
-    console.log(`${bot.user.username} is online!`);
+    console.log(`${bot.user?.username} is online!`);
 });
 
 bot.login(config.token).catch(console.log);

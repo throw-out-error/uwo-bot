@@ -1,4 +1,4 @@
-import { RichEmbed } from "discord.js";
+import { MessageEmbed } from "discord.js";
 import { CommandoClient, Command, CommandMessage } from "discord.js-commando";
 
 export default class InfoCommand extends Command {
@@ -13,7 +13,6 @@ export default class InfoCommand extends Command {
     }
 
     async run(msg: CommandMessage, args: string[]) {
-        const apiPing = Math.round(this.client.ping); // This will round the api ping of the client
         const responseTime = Math.round(Date.now() - msg.createdTimestamp); // This will round the response time between when the message was received and when the message was sent
         const elapUsage = process.cpuUsage();
 
@@ -25,26 +24,21 @@ export default class InfoCommand extends Command {
         ).toFixed(1);
 
         return msg.channel.send(
-            new RichEmbed({
+            new MessageEmbed({
                 title: `uwo-bot status`,
                 color: 0x33cc33,
                 thumbnail: {
-                    url: this.client.user.avatarURL,
+                    url: this.client.user?.avatarURL()!,
                 },
                 fields: [
                     {
                         name: "My Nawme",
-                        value: `${this.client.user.username}`,
+                        value: `${this.client.user?.username}`,
                     },
                     {
                         name: "Sewvews I'm In",
                         inline: true,
-                        value: `${this.client.guilds.size}`,
-                    },
-                    {
-                        name: "Ping",
-                        inline: true,
-                        value: `${apiPing}`,
+                        value: `${this.client.guilds.cache.size}`,
                     },
                     {
                         name: "Response Time",

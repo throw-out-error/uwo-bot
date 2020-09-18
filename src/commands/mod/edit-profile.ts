@@ -1,4 +1,4 @@
-import { GuildMember, RichEmbedOptions, User } from "discord.js";
+import { GuildMember, MessageEmbedOptions, User } from "discord.js";
 import { CommandoClient, Command, CommandMessage } from "discord.js-commando";
 
 export default class ProfileCommand extends Command {

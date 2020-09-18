@@ -1,5 +1,6 @@
 import { User } from "discord.js";
 import { CommandoClient, Command, CommandMessage } from "discord.js-commando";
+import { getTarget } from "../../util";
 
 export default class InfoCommand extends Command {
     constructor(bot: CommandoClient) {
@@ -14,17 +15,13 @@ export default class InfoCommand extends Command {
     }
 
     async run(msg: CommandMessage, args: string[]) {
-        const target: User | undefined =
-            args[0] && args[0].length > 0
-                ? this.client.users.find(
-                      (user) =>
-                          user.username === args[0].replace(/<@!?|>/g, "") ||
-                          user.id === args[0].replace(/<@!?|>/g, "") ||
-                          user.tag === args[0].replace(/<@!?|>/g, ""),
-                  ) || msg.author
-                : msg.author;
-        if (!target) return msg.reply("Please specify someone to kick.");
-        const gm = msg.guild.members.get(target.id);
+        const author = msg.guild.members.cache.get(msg.author.id);
+        if (!author?.hasPermission("KICK_MEMBERS"))
+            return msg.reply("You don't have permission to kick users.");
+
+        const target = getTarget(this.client, msg, args);
+        if (!target) return msg.reply("Please specify a target.");
+        const gm = msg.guild.members.cache.get(target.id);
         if (gm && gm.kickable) {
             gm.kick();
             return msg.reply(`${target.username} has been kicked.`);

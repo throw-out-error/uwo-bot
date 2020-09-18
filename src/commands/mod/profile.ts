@@ -1,5 +1,11 @@
-import { GuildMember, RichEmbed, RichEmbedOptions, User } from "discord.js";
+import {
+    GuildMember,
+    MessageEmbed,
+    MessageEmbedOptions,
+    User,
+} from "discord.js";
 import { CommandoClient, Command, CommandMessage } from "discord.js-commando";
+import { getTarget } from "../../util";
 
 export default class ProfileCommand extends Command {
     constructor(bot: CommandoClient) {
@@ -14,21 +20,12 @@ export default class ProfileCommand extends Command {
     }
 
     async run(msg: CommandMessage, args: string[]) {
-        // console.log(args.map((v) => v.replace(/<@!?|>/g, "")));
-        const u: User | undefined =
-            args[0] && args[0].length > 0
-                ? this.client.users.find(
-                      (user) =>
-                          user.username === args[0].replace(/<@!?|>/g, "") ||
-                          user.id === args[0].replace(/<@!?|>/g, "") ||
-                          user.tag === args[0].replace(/<@!?|>/g, ""),
-                  ) || msg.author
-                : msg.author;
-        const gm = msg.guild.members.get(u.id)!;
-        return msg.channel.send(new RichEmbed(this.createProfile(u, gm)));
+        const u = getTarget(this.client, msg, args);
+        const gm = msg.guild.members.cache.get(u.id)!;
+        return msg.channel.send(new MessageEmbed(this.createProfile(u, gm)));
     }
 
-    createProfile(user: User, gm: GuildMember): RichEmbedOptions {
+    createProfile(user: User, gm: GuildMember): MessageEmbedOptions {
         const profileData: object = this.client.provider.get(
             "global",
             `${user.id}.profile`,
@@ -49,7 +46,7 @@ export default class ProfileCommand extends Command {
             title: `${user.username}'s Profile`,
             color: 0x33cc33,
             thumbnail: {
-                url: user.avatarURL,
+                url: user.avatarURL()!,
             },
             fields: [
                 {
@@ -64,7 +61,7 @@ export default class ProfileCommand extends Command {
                 {
                     name: "Joined At",
                     inline: true,
-                    value: `${gm.joinedAt.toLocaleDateString()} at ${gm.joinedAt.toLocaleTimeString()}`,
+                    value: `${gm.joinedAt?.toLocaleDateString()} at ${gm.joinedAt?.toLocaleTimeString()}`,
                 },
                 {
                     name: `Usew ID`,
