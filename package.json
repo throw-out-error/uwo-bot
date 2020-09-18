@@ -4,13 +4,14 @@
     "description": "UwU pwease invite me",
     "main": "dist/src/index.js",
     "scripts": {
-        "dev": "nodemon",
+        "dev": "NODE_ENV=development nodemon",
         "build": "tsc",
         "start": "node dist/src/index.js"
     },
     "author": "Theo Paris",
     "license": "MIT",
     "dependencies": {
+        "@keyv/mongo": "^1.1.0",
         "@keyv/sqlite": "^2.0.2",
         "@types/keyv": "^3.1.1",
         "discord.js": "^12.3.1",
