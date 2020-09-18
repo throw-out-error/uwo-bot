@@ -1,6 +1,7 @@
-import { MessageEmbed, User } from "discord.js";
-import { CommandoClient, Command, CommandMessage } from "discord.js-commando";
-import { getTarget } from "../../util";
+import { MessageEmbed, TextChannel, User } from "discord.js";
+import { CommandoClient, Command, CommandoMessage } from "discord.js-commando";
+import { database } from "../../config";
+import { getTarget, isText } from "../../util";
 
 export default class InfoCommand extends Command {
     constructor(bot: CommandoClient) {
@@ -11,31 +12,41 @@ export default class InfoCommand extends Command {
             memberName: "suggest",
             description: "Kicks a member from the discord server.",
             argsType: "multiple",
+            clientPermissions: ["ADD_REACTIONS", "EMBED_LINKS"],
         });
     }
 
-    async run(msg: CommandMessage, args: string[]) {
+    async run(msg: CommandoMessage, args: string[]) {
         if (!args.length) return msg.reply("Please give a valid suggestion!");
 
-        let channel = msg.guild.channels.cache.find(
-            (x) =>
-                x.name === "suggestion" || setImmediate.name === "suggestions",
-        );
+        const channelNames = ((await database.get(
+            `settings.suggestions.channels.${msg.guild.id}`,
+        )) as string).split(",");
 
-        if (!channel)
-            return msg.reply("There is no channel with name: suggestions");
+        let channel = this.client.guilds.cache
+
+            .get(msg.guild.id)
+            ?.channels.cache.find((x) => channelNames.includes(x.name));
+
+        if (!channel || !isText(channel))
+            return msg.reply("The suggestion channel could not be found.");
 
         let embed: MessageEmbed = new MessageEmbed()
-            .setAuthor(`SUGGESTION: ${msg.author.tag}`, msg.author.avatarURL()!)
+            .setTitle("Suggestion")
+            .setAuthor(msg.author.username, msg.author.avatarURL()!)
+            .addFields({
+                name: "User",
+                value: `${msg.author.tag}`,
+            })
             .setThumbnail(msg.author.avatarURL()!)
             .setColor("#ff2050")
             .setDescription(args.join(" "))
             .setTimestamp();
 
-        const res = await msg.channel.send(embed);
+        const res = await channel.send(embed);
 
-        msg.react("756309736563146893");
-        msg.react("756309875755188354");
+        await res.react("✅");
+        await res.react("❌");
 
         return res;
     }

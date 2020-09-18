@@ -1,11 +1,13 @@
 import { User } from "discord.js";
-import { CommandoClient, Command, CommandMessage } from "discord.js-commando";
+import { CommandoClient, Command, CommandoMessage } from "discord.js-commando";
 import { getTarget } from "../../util";
 
 export default class InfoCommand extends Command {
     constructor(bot: CommandoClient) {
         super(bot, {
             name: "kick",
+            userPermissions: ["KICK_MEMBERS"],
+            clientPermissions: ["KICK_MEMBERS"],
             aliases: [],
             group: "mod",
             memberName: "kick",
@@ -14,10 +16,8 @@ export default class InfoCommand extends Command {
         });
     }
 
-    async run(msg: CommandMessage, args: string[]) {
+    async run(msg: CommandoMessage, args: string[]) {
         const author = msg.guild.members.cache.get(msg.author.id);
-        if (!author?.hasPermission("KICK_MEMBERS"))
-            return msg.reply("You don't have permission to kick users.");
 
         const target = getTarget(this.client, msg, args);
         if (!target) return msg.reply("Please specify a target.");

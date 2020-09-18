@@ -4,7 +4,8 @@ import {
     MessageEmbedOptions,
     User,
 } from "discord.js";
-import { CommandoClient, Command, CommandMessage } from "discord.js-commando";
+import { CommandoClient, Command, CommandoMessage } from "discord.js-commando";
+import { database } from "../../config";
 import { getTarget } from "../../util";
 
 export default class ProfileCommand extends Command {
@@ -19,22 +20,23 @@ export default class ProfileCommand extends Command {
         });
     }
 
-    async run(msg: CommandMessage, args: string[]) {
+    async run(msg: CommandoMessage, args: string[]) {
         const u = getTarget(this.client, msg, args);
         const gm = msg.guild.members.cache.get(u.id)!;
-        return msg.channel.send(new MessageEmbed(this.createProfile(u, gm)));
+        return msg.channel.send(
+            new MessageEmbed(await this.createProfile(u, gm)),
+        );
     }
 
-    createProfile(user: User, gm: GuildMember): MessageEmbedOptions {
-        const profileData: object = this.client.provider.get(
-            "global",
+    async createProfile(
+        user: User,
+        gm: GuildMember,
+    ): Promise<MessageEmbedOptions> {
+        const profileData: object = (await database.get(
             `${user.id}.profile`,
-            {
-                Bio: {
-                    value: "Hello there.",
-                },
-            },
-        );
+        )) || {
+            Bio: "Hello there.",
+        };
         let fields: [string, any][] = Object.entries(profileData);
 
         // Remove Duplicates

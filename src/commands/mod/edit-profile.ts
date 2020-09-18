@@ -1,5 +1,6 @@
 import { GuildMember, MessageEmbedOptions, User } from "discord.js";
-import { CommandoClient, Command, CommandMessage } from "discord.js-commando";
+import { CommandoClient, Command, CommandoMessage } from "discord.js-commando";
+import { database } from "../../config";
 
 export default class ProfileCommand extends Command {
     constructor(bot: CommandoClient) {
@@ -13,18 +14,18 @@ export default class ProfileCommand extends Command {
         });
     }
 
-    async run(msg: CommandMessage, args: string[] | string) {
+    async run(msg: CommandoMessage, args: string) {
         const u = msg.author;
-        const newProfile = {
-            ...this.client.provider.get("global", `${u.id}.profile`),
+        const newProfile = (await database.get(`${u.id}.profile`)) || {
+            Bio: "Hello there.",
         };
-        const fieldData = msg.argString.split("--");
+        const fieldData = args.split("--");
         if (fieldData.length < 2)
             return msg.channel.send(
                 "Not enough arguments! Key and JSON value required. Use the help command for more information.",
             );
         newProfile[fieldData[0]] = fieldData[1];
-        this.client.provider.set("global", `${u.id}.profile`, newProfile);
+        await database.set(`${u.id}.profile`, newProfile);
         return msg.channel.send("Updated your profile!");
     }
 }

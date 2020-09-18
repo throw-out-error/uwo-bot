@@ -1,9 +1,9 @@
-import { User } from "discord.js";
-import { CommandoClient, CommandMessage } from "discord.js-commando";
+import { Channel, TextChannel, User } from "discord.js";
+import { CommandoClient, CommandoMessage } from "discord.js-commando";
 
 export const getTarget = (
     client: CommandoClient,
-    msg: CommandMessage,
+    msg: CommandoMessage,
     args: string[],
 ): User => {
     const target: User =
@@ -17,3 +17,6 @@ export const getTarget = (
             : msg.author;
     return target;
 };
+
+export const isText = (channel: Channel): channel is TextChannel =>
+    channel.type === "text";

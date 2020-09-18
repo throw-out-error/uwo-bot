@@ -1,5 +1,5 @@
 import { MessageEmbed } from "discord.js";
-import { CommandoClient, Command, CommandMessage } from "discord.js-commando";
+import { CommandoClient, Command, CommandoMessage } from "discord.js-commando";
 
 export default class InfoCommand extends Command {
     constructor(bot: CommandoClient) {
@@ -12,7 +12,7 @@ export default class InfoCommand extends Command {
         });
     }
 
-    async run(msg: CommandMessage, args: string[]) {
+    async run(msg: CommandoMessage, args: string[]) {
         const responseTime = Math.round(Date.now() - msg.createdTimestamp); // This will round the response time between when the message was received and when the message was sent
         const elapUsage = process.cpuUsage();
 
