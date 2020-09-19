@@ -23,3 +23,7 @@ You can chat `uwo help` to get a DM with the help information for this bot.
     -   edits a custom field in your profile
     -   2 arguments (seperated by `--`)
     -   example: `uwo edpr Bio--Hello Everyone`
+-   suggest (sg):
+    -   suggests a message in the guild's suggestion channel
+    -   can add reactions (√, X)
+    -   unlimited arguments
