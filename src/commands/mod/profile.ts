@@ -5,7 +5,7 @@ import {
     User,
 } from "discord.js";
 import { CommandoClient, Command, CommandoMessage } from "discord.js-commando";
-import { database } from "../../config";
+import { Profile } from "../../config/database/profile";
 import { getTarget } from "../../util";
 
 export default class ProfileCommand extends Command {
@@ -32,12 +32,22 @@ export default class ProfileCommand extends Command {
         user: User,
         gm: GuildMember,
     ): Promise<MessageEmbedOptions> {
-        const profileData: object = (await database.get(
-            `${user.id}.profile`,
-        )) || {
-            Bio: "Hello there.",
-        };
-        let fields: [string, any][] = Object.entries(profileData);
+        let profileData = await Profile.findOne({
+            where: { userId: user.id },
+        });
+
+        if (!profileData)
+            profileData = (
+                await Profile.insert({
+                    guildId: gm.guild.id,
+                    userId: user.id,
+                    fields: {
+                        Bio: "Hello world.",
+                    },
+                })
+            ).raw;
+
+        let fields: [string, any][] = Object.entries(profileData!.fields);
 
         // Remove Duplicates
         fields = fields.filter(

@@ -4,27 +4,30 @@
     "description": "UwU pwease invite me",
     "main": "dist/src/index.js",
     "scripts": {
-        "dev": "NODE_ENV=development nodemon",
+        "dev": "env-cmd nodemon",
         "build": "tsc",
-        "start": "node dist/src/index.js"
+        "prestart": "yarn run build",
+        "start": "env-cmd node dist/src/index.js"
     },
     "author": "Theo Paris",
     "license": "MIT",
     "dependencies": {
         "@keyv/mongo": "^1.1.0",
         "@keyv/sqlite": "^2.0.2",
-        "@types/keyv": "^3.1.1",
         "discord.js": "^12.3.1",
-        "discord.js-commando": "github:discordjs/Commando",
+        "discord.js-commando": "https://github.com/discordjs/Commando.git",
+        "env-cmd": "^10.1.0",
         "keyv": "^4.0.3",
         "sqlite": "^4.0.14",
-        "sqlite3": "^5.0.0"
+        "sqlite3": "^5.0.0",
+        "typeorm": "^0.2.26"
     },
     "devDependencies": {
+        "@types/keyv": "^3.1.1",
         "@types/node": "^14.11.1",
         "@types/sqlite3": "^3.1.6",
         "nodemon": "^2.0.4",
         "ts-node-dev": "^1.0.0-pre.62",
-        "typescript": "^4.0.2"
+        "typescript": "^4.0.3"
     }
 }

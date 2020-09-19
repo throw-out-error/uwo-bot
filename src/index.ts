@@ -1,6 +1,6 @@
 import { CommandoClient } from "discord.js-commando";
 import path from "path";
-import { config } from "./config";
+import { config, getConnection } from "./config/index";
 
 const bot: CommandoClient = new CommandoClient({
     commandPrefix: `${config.prefix} `,
@@ -24,7 +24,13 @@ bot.registry
 // .registerTypesIn(path.join(__dirname, "types"));
 
 bot.on("ready", async () => {
-    console.log(`${bot.user?.username} is online!`);
+    try {
+        await getConnection();
+        console.log(`${bot.user?.username} is online!`);
+    } catch (err) {
+        console.log(`Error connecting to database:`);
+        console.error(err);
+    }
 });
 
 bot.login(config.token).catch(console.log);

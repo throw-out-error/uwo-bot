@@ -1,7 +1,7 @@
-import { MessageEmbed, TextChannel, User } from "discord.js";
+import { MessageEmbed } from "discord.js";
 import { CommandoClient, Command, CommandoMessage } from "discord.js-commando";
-import { database } from "../../config";
-import { getTarget, isText } from "../../util";
+import { Settings } from "../../config/database/settings";
+import { isText } from "../../util";
 
 export default class InfoCommand extends Command {
     constructor(bot: CommandoClient) {
@@ -19,9 +19,16 @@ export default class InfoCommand extends Command {
     async run(msg: CommandoMessage, args: string[]) {
         if (!args.length) return msg.reply("Please give a valid suggestion!");
 
-        const channelNames = ((await database.get(
-            `settings.suggestions.channels.${msg.guild.id}`,
-        )) as string).split(",");
+        const channelNames = (
+            await Settings.findOne({
+                where: { guildId: msg.guild.id },
+            })
+        )?.suggestionChannels;
+
+        if (!channelNames)
+            return msg.reply(
+                "The server admin has not set up a suggestion channel!",
+            );
 
         let channel = this.client.guilds.cache
 

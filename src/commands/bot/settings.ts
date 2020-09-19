@@ -1,45 +1,82 @@
 import { MessageEmbed } from "discord.js";
 import { CommandoClient, Command, CommandoMessage } from "discord.js-commando";
-import { database } from "../../config";
+import { Settings } from "../../config/database/settings";
 
 export default class InfoCommand extends Command {
     constructor(bot: CommandoClient) {
         super(bot, {
             name: "settings",
-            aliases: ["st"],
+            aliases: ["cs", "changesettings"],
             group: "bot",
             memberName: "settings",
-            description: "changes settings for the bot",
+            description:
+                "changes settings for the bot that are also specific to the guild",
             userPermissions: ["ADMINISTRATOR"],
-            argsType: "multiple",
+            args: [
+                {
+                    key: "action",
+                    prompt: "What action would you like to run?",
+                    default: "get",
+                    type: "string",
+                    oneOf: ["get", "set"],
+                },
+                {
+                    key: "setting",
+                    prompt: "What setting would you like to retrieve/modify?",
+                    type: "string",
+                    oneOf: ["sgchannel"],
+                },
+            ],
         });
     }
 
-    async run(msg: CommandoMessage, args: string[]) {
-        if (!args.length) return msg.reply("Invalid setting.");
+    async run(
+        msg: CommandoMessage,
+        { setting, action }: { setting: string; action: string },
+    ) {
         try {
-            switch (args[1].toLowerCase()) {
-                case "schannel":
-                    if (args[0].toLowerCase() === "set" && args.length >= 3) {
-                        await database.set(
-                            `settings.suggestions.channels.${msg.guild.id}`,
-                            args[2],
-                        );
-                        return msg.reply(
-                            `Succesfully recieved setting ${args[1]}`,
-                        );
-                    } else if (
-                        args[0].toLowerCase() === "get" &&
-                        args.length === 2
-                    )
-                        return msg.reply(
-                            `Current value: ${await database.get(
-                                `settings.suggestions.channels.${msg.guild.id}`,
-                            )}`,
-                        );
-                    break;
+            if (!Settings.findOne({ guildId: msg.guild.id }))
+                await Settings.insert({
+                    guildId: msg.guild.id,
+                    suggestionChannels: [],
+                });
+            setting = setting.toLowerCase();
+            action = action.toLowerCase();
+            switch (action) {
+                case "get":
+                    switch (setting) {
+                        case "sgchannel":
+                            await Settings.update(
+                                {
+                                    guildId: msg.guild.id,
+                                },
+                                {
+                                    suggestionChannels: action.split(","),
+                                },
+                            );
+                            return msg.reply(
+                                `Succesfully modified setting ${setting}`,
+                            );
+                        default:
+                            return msg.reply(
+                                `Cannot set unknown setting ${setting}`,
+                            );
+                    }
+                case "set":
+                    switch (setting) {
+                        case "sgchannel":
+                            return msg.reply(
+                                `Current value: ${(await Settings.findOne({
+                                    guildId: msg.guild.id,
+                                }))!.suggestionChannels.join(" ")}`,
+                            );
+                        default:
+                            return msg.reply(
+                                `Cannot get unknown setting ${setting}`,
+                            );
+                    }
             }
-            return msg.reply("Invalid command.");
+            return msg.reply("Invalid arguments. Valid arguments: set, get");
         } catch (err) {
             return msg.reply(`Failed with error: ${err.message}`);
         }
