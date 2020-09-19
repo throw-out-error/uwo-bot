@@ -1,6 +1,6 @@
 # uwo bot
 
-A work in progress discord bot.
+A wowk in pwogwess, extwemewy customizabwe discowd bot.
 
 ## Inviting
 
