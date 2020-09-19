@@ -16,7 +16,6 @@ export default class InfoCommand extends Command {
                 {
                     key: "action",
                     prompt: "What action would you like to run?",
-                    default: "get",
                     type: "string",
                     oneOf: ["get", "set"],
                 },
@@ -24,7 +23,14 @@ export default class InfoCommand extends Command {
                     key: "setting",
                     prompt: "What setting would you like to retrieve/modify?",
                     type: "string",
-                    oneOf: ["sgchannel"],
+                    oneOf: ["sgchannel", "all"],
+                },
+                {
+                    key: "value",
+                    prompt:
+                        "What is the new value for this setting? (optional)",
+                    type: "string",
+                    default: "",
                 },
             ],
         });
@@ -32,18 +38,35 @@ export default class InfoCommand extends Command {
 
     async run(
         msg: CommandoMessage,
-        { setting, action }: { setting: string; action: string },
+        {
+            action,
+            setting,
+            value: newValue,
+        }: { action: string; setting: string; value?: string },
     ) {
         try {
-            if (!Settings.findOne({ guildId: msg.guild.id }))
+            let settings = await Settings.findOne({
+                guildId: msg.guild.id,
+            });
+            if (!settings) {
                 await Settings.insert({
                     guildId: msg.guild.id,
                     suggestionChannels: [],
                 });
+                settings = await Settings.findOne({
+                    guildId: msg.guild.id,
+                });
+            }
+
             setting = setting.toLowerCase();
             action = action.toLowerCase();
+            let value = "";
+
             switch (action) {
-                case "get":
+                case "set":
+                    value = newValue || "";
+                    if (value.trim() === "")
+                        return msg.reply("Invalid setting value!");
                     switch (setting) {
                         case "sgchannel":
                             await Settings.update(
@@ -51,32 +74,42 @@ export default class InfoCommand extends Command {
                                     guildId: msg.guild.id,
                                 },
                                 {
-                                    suggestionChannels: action.split(","),
+                                    suggestionChannels: value.split(","),
                                 },
                             );
-                            return msg.reply(
-                                `Succesfully modified setting ${setting}`,
-                            );
+                            break;
                         default:
                             return msg.reply(
                                 `Cannot set unknown setting ${setting}`,
                             );
                     }
-                case "set":
+                case "get":
                     switch (setting) {
                         case "sgchannel":
-                            return msg.reply(
-                                `Current value: ${(await Settings.findOne({
-                                    guildId: msg.guild.id,
-                                }))!.suggestionChannels.join(" ")}`,
-                            );
+                            value = `${settings!.suggestionChannels.join(" ")}`;
+                            break;
+                        case "all":
+                            value = `\n${Object.entries(settings!)
+                                .map((e) => `${e[0]}: ${e[1]}`)
+                                .join(", \n")}`;
+                            break;
                         default:
                             return msg.reply(
                                 `Cannot get unknown setting ${setting}`,
                             );
                     }
             }
-            return msg.reply("Invalid arguments. Valid arguments: set, get");
+            switch (action) {
+                case "set":
+                    return msg.reply(
+                        `Succesfully modified setting ${setting} to value ${value}`,
+                    );
+                case "get":
+                    return msg.reply(
+                        `Current value for ${setting}: ${value || "not set"}`,
+                    );
+            }
+            return msg.reply("Invalid arguments!");
         } catch (err) {
             return msg.reply(`Failed with error: ${err.message}`);
         }

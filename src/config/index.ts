@@ -1,5 +1,5 @@
 import * as cfg from "../../config.json";
-import { BaseEntity, createConnection } from "typeorm";
+import { createConnection } from "typeorm";
 import { Profile } from "./database/profile";
 import { Settings } from "./database/settings";
 
@@ -30,5 +30,8 @@ export const getConnection = async () => {
         }@${process.env.DB_HOST || "localhost"}:${
             process.env.DB_PORT || "27017"
         }/${process.env.DB_NAME || "uwo-bot"}?authSource=admin`,
+        entities: [Profile, Settings],
+        logging: true,
+        synchronize: true,
     });
 };

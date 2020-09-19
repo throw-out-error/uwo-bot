@@ -45,7 +45,15 @@ export default class ProfileCommand extends Command {
                 "Invalid key and value. Example: 'uwo edpr Bio Hello world.'",
             );
         profileData![fieldData[0]] = fieldData[1];
-        await Profile.update({ userId: user.id }, profileData!);
+        await Profile.update(
+            { userId: user.id },
+            {
+                fields: {
+                    ...profileData?.fields,
+                    [fieldData[0]]: fieldData[1],
+                },
+            },
+        );
         return msg.reply("Updated your profile.");
     }
 }

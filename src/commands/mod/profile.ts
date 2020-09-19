@@ -24,11 +24,11 @@ export default class ProfileCommand extends Command {
         const u = getTarget(this.client, msg, args);
         const gm = msg.guild.members.cache.get(u.id)!;
         return msg.channel.send(
-            new MessageEmbed(await this.createProfile(u, gm)),
+            new MessageEmbed(await this.fetchProfile(u, gm)),
         );
     }
 
-    async createProfile(
+    async fetchProfile(
         user: User,
         gm: GuildMember,
     ): Promise<MessageEmbedOptions> {
@@ -36,16 +36,18 @@ export default class ProfileCommand extends Command {
             where: { userId: user.id },
         });
 
-        if (!profileData)
-            profileData = (
-                await Profile.insert({
-                    guildId: gm.guild.id,
-                    userId: user.id,
-                    fields: {
-                        Bio: "Hello world.",
-                    },
-                })
-            ).raw;
+        if (!profileData) {
+            await Profile.insert({
+                guildId: gm.guild.id,
+                userId: user.id,
+                fields: {
+                    Bio: "Hello world.",
+                },
+            });
+            profileData = await Profile.findOne({
+                where: { userId: user.id },
+            });
+        }
 
         let fields: [string, any][] = Object.entries(profileData!.fields);
 

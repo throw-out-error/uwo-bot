@@ -10,7 +10,6 @@ import {
 @Entity()
 export class Profile extends BaseEntity {
     @ObjectIdColumn()
-    @PrimaryGeneratedColumn()
     id: ObjectID;
 
     @Column()
