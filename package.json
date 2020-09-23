@@ -20,7 +20,8 @@
         "keyv": "^4.0.3",
         "sqlite": "^4.0.14",
         "sqlite3": "^5.0.0",
-        "typeorm": "^0.2.26"
+        "typeorm": "^0.2.26",
+        "uwuifier": "^2.0.2"
     },
     "devDependencies": {
         "@types/keyv": "^3.1.1",
