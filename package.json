@@ -6,7 +6,6 @@
     "scripts": {
         "dev": "env-cmd nodemon",
         "build": "tsc",
-        "prestart": "yarn run build",
         "start": "env-cmd node dist/src/index.js"
     },
     "author": "Theo Paris",
