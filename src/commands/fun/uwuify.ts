@@ -1,5 +1,5 @@
 import { CommandoClient, Command, CommandoMessage } from "discord.js-commando";
-import { Uwuifier } from "Uwuifier";
+import { Uwuifier } from "uwuifier";
 
 export default class UwuifyCommand extends Command {
     uwuifier: Uwuifier;
