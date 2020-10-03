@@ -1,4 +1,4 @@
-import { MessageEmbed } from "discord.js";
+import { RichEmbed } from "discord.js";
 import { CommandoClient, Command, CommandoMessage } from "discord.js-commando";
 import { Settings } from "../../config/database/settings";
 

@@ -1,4 +1,4 @@
-import { MessageEmbed } from "discord.js";
+import { RichEmbed } from "discord.js";
 import { CommandoClient, Command, CommandoMessage } from "discord.js-commando";
 import { Settings } from "../../config/database/settings";
 import { isText } from "../../util";
@@ -30,25 +30,27 @@ export default class InfoCommand extends Command {
                 "The server admin has not set up a suggestion channel!",
             );
 
-        let channel = this.client.guilds.cache
+        let channel = this.client.guilds
 
             .get(msg.guild.id)
-            ?.channels.cache.find((x) => channelNames.includes(x.name));
+            ?.channels.find((x) => channelNames.includes(x.name));
 
         if (!channel || !isText(channel))
             return msg.reply("The suggestion channel could not be found.");
 
-        let embed: MessageEmbed = new MessageEmbed()
+        let embed: RichEmbed = new RichEmbed()
             .setTitle("Suggestion")
-            .setAuthor(msg.author.username, msg.author.avatarURL()!)
-            .addFields({
-                name: "User",
-                value: `${msg.author.tag}`,
-            })
-            .setThumbnail(msg.author.avatarURL()!)
+            .setAuthor(msg.author.username, msg.author.avatarURL)
+            .setThumbnail(msg.author.avatarURL)
             .setColor("#ff2050")
             .setDescription(args.join(" "))
             .setTimestamp();
+        embed.fields = [
+            {
+                name: "User",
+                value: `${msg.author.tag}`,
+            },
+        ];
 
         const res = await channel.send(embed);
 

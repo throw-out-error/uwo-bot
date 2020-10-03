@@ -1,4 +1,4 @@
-import { MessageEmbed } from "discord.js";
+import { RichEmbed } from "discord.js";
 import { CommandoClient, Command, CommandoMessage } from "discord.js-commando";
 
 export default class InfoCommand extends Command {
@@ -24,11 +24,11 @@ export default class InfoCommand extends Command {
         ).toFixed(1);
 
         return msg.channel.send(
-            new MessageEmbed({
+            new RichEmbed({
                 title: `uwo-bot status`,
                 color: 0x33cc33,
                 thumbnail: {
-                    url: this.client.user?.avatarURL()!,
+                    url: this.client.user?.avatarURL,
                 },
                 fields: [
                     {
@@ -38,7 +38,7 @@ export default class InfoCommand extends Command {
                     {
                         name: "Sewvews I'm In",
                         inline: true,
-                        value: `${this.client.guilds.cache.size}`,
+                        value: `${this.client.guilds.size}`,
                     },
                     {
                         name: "Response Time",

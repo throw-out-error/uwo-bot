@@ -17,11 +17,11 @@ export default class InfoCommand extends Command {
     }
 
     async run(msg: CommandoMessage, args: string[]) {
-        const author = msg.guild.members.cache.get(msg.author.id);
+        const author = msg.guild.members.get(msg.author.id);
 
         const target = getTarget(this.client, msg, args);
         if (!target) return msg.reply("Please specify a target.");
-        const gm = msg.guild.members.cache.get(target.id);
+        const gm = msg.guild.members.get(target.id);
         if (gm && gm.kickable) {
             gm.kick();
             return msg.reply(`${target.username} has been kicked.`);

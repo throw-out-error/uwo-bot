@@ -1,9 +1,4 @@
-import {
-    GuildMember,
-    MessageEmbed,
-    MessageEmbedOptions,
-    User,
-} from "discord.js";
+import { GuildMember, RichEmbed, RichEmbedOptions, User } from "discord.js";
 import { CommandoClient, Command, CommandoMessage } from "discord.js-commando";
 import { Profile } from "../../config/database/profile";
 import { getTarget } from "../../util";
@@ -22,16 +17,11 @@ export default class ProfileCommand extends Command {
 
     async run(msg: CommandoMessage, args: string[]) {
         const u = getTarget(this.client, msg, args);
-        const gm = msg.guild.members.cache.get(u.id)!;
-        return msg.channel.send(
-            new MessageEmbed(await this.fetchProfile(u, gm)),
-        );
+        const gm = msg.guild.members.get(u.id)!;
+        return msg.channel.send(new RichEmbed(await this.fetchProfile(u, gm)));
     }
 
-    async fetchProfile(
-        user: User,
-        gm: GuildMember,
-    ): Promise<MessageEmbedOptions> {
+    async fetchProfile(user: User, gm: GuildMember): Promise<RichEmbedOptions> {
         let profileData = await Profile.findOne({
             where: { userId: user.id },
         });
@@ -60,7 +50,7 @@ export default class ProfileCommand extends Command {
             title: `${user.username}'s Profile`,
             color: 0x33cc33,
             thumbnail: {
-                url: user.avatarURL()!,
+                url: user.avatarURL,
             },
             fields: [
                 {
