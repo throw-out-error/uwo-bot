@@ -1,0 +1,13 @@
+{
+    "Bot": {
+        "db": {
+            "token": "EXAMPLE_TOKEN",
+            "prefix": "uwo",
+            "supportServerInvite": "",
+            "db": {
+                "type": "postgres",
+                "url": "postgresql://localhost/uwo-bot"
+            }
+        }
+    }
+}

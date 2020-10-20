@@ -10,11 +10,12 @@ import {
 @Entity()
 export class Settings extends BaseEntity {
     @ObjectIdColumn()
+    @PrimaryGeneratedColumn()
     id: ObjectID;
 
     @Column()
     guildId: string;
 
-    @Column()
+    @Column("json")
     suggestionChannels: string[];
 }

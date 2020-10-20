@@ -1,16 +1,16 @@
 {
     "compilerOptions": {
-        "target": "es2019",
-        "module": "commonjs",
-        "allowSyntheticDefaultImports": true,
-        "strictNullChecks": true,
-        "esModuleInterop": true,
+        "target": "ES2019",
+        "module": "CommonJS",
+        "moduleResolution": "node",
+        "skipLibCheck": true,
         "resolveJsonModule": true,
-        "outDir": "dist",
-        "experimentalDecorators": true,
+        "esModuleInterop": true,
         "emitDecoratorMetadata": true,
-        "skipLibCheck": true
+        "experimentalDecorators": true,
+        "allowSyntheticDefaultImports": true,
+        "declaration": false,
+        "outDir": "dist"
     },
-    "include": ["src"],
-    "exclude": ["node_modules", "*.sqlite"]
+    "exclude": ["node_modules", "**/*.spec.ts", "dist"]
 }

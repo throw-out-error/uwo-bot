@@ -1,5 +1,18 @@
-config.json
-*.sqlite3
+# Distribution
 dist
+out
+build
 node_modules
+
+# Logs
+*.log*
+logs
+
+# Environment
 *.env*
+config/production.json
+config/default.json
+
+# Misc
+.DS_Store
+*.sqlite

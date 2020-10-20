@@ -1,25 +1,24 @@
-import * as cfg from "../../config.json";
-import { createConnection, getConnection } from "typeorm";
+import { ConnectionOptions, createConnection, getConnection } from "typeorm";
 import { Profile } from "./database/profile";
 import { Settings } from "./database/settings";
+import { get, has } from "config";
 
 export type Config = {
-    prefix?: string;
     token: string;
-    supportServerInvite: string;
-    owners: string[];
-    dbUri?: string;
+    db: ConnectionOptions;
+    owners?: string[];
+    prefix?: string;
+    supportServerInvite?: string;
 };
 
-const c = cfg as any;
-
 export const config: Config = {
-    prefix: c.prefix ?? process.env.PREFIX! ?? "uwo",
-    token: c.token ?? process.env.TOKEN!,
-    supportServerInvite:
-        c.supportServerInvite ?? process.env.SUPPORT_SERVER_INVITE!,
-    owners: c.owners ?? [],
-    dbUri: c.dbUri ?? "mongodb://localhost/uwo-bot",
+    prefix: has("Bot.prefix") ? get("Bot.prefix") : "uwo",
+    token: get("Bot.token"),
+    supportServerInvite: has("Bot.supportServerInvite")
+        ? get("Bot.supportServerInvite")
+        : "",
+    owners: has("Bot.owners") ? get("Bot.owners") : [],
+    db: get("Bot.db") as ConnectionOptions,
 };
 
 export const dev = process.env.NODE_ENV === "development";
@@ -29,8 +28,7 @@ export const getDatabase = async () => {
         return getConnection();
     } catch {
         return await createConnection({
-            type: "mongodb",
-            url: `${config.dbUri}?authSource=admin`,
+            ...config.db,
             entities: [Profile, Settings],
             logging: true,
             synchronize: true,

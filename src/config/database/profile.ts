@@ -10,6 +10,7 @@ import {
 @Entity()
 export class Profile extends BaseEntity {
     @ObjectIdColumn()
+    @PrimaryGeneratedColumn()
     id: ObjectID;
 
     @Column()
@@ -24,6 +25,6 @@ export class Profile extends BaseEntity {
     @Column({ default: 1 })
     level: number;
 
-    @Column()
+    @Column("json")
     fields: Record<string, string>;
 }

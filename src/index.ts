@@ -13,13 +13,15 @@ bot.registry
     .registerGroups([
         ["bot", "Core bot commands"],
         ["mod", "Moderation commands"],
-        ["fun", "Random commands for fun"]
+        ["fun", "Random commands for fun"],
     ])
-    .registerDefaults()
-    .registerCommandsIn({
-        filter: /^([^.].*)\.(js|ts)$/,
-        dirname: path.join(__dirname, "commands"),
-    });
+    .registerDefaults();
+bot.registry.unregisterCommand(bot.registry.findCommands("eval")[0]);
+bot.registry.registerCommandsIn({
+    filter: /^([^.].*)\.(js|ts)$/,
+    dirname: path.join(__dirname, "commands"),
+});
+
 // .registerTypesIn(path.join(__dirname, "types"));
 
 bot.on("ready", async () => {
