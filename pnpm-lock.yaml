@@ -11,11 +11,11 @@ dependencies:
   babel-plugin-dynamic-import-node: 2.3.3
   babel-preset-es2015: 6.24.1
   config: 3.3.2
-  discord.js: github.com/discordjs/discord.js/d2341654fe6ef87c6048bb5bf74c394062f3f618
-  discord.js-commando: github.com/discordjs/Commando/198d7604e3725ee88dceab9b5f296edb1b7580a5_discord.js@12.3.1+sqlite@4.0.15
+  discord.js: github.com/discordjs/discord.js/7ec0bd93b0d7788e8ccf5576add37f7198be3f72
+  discord.js-commando: github.com/discordjs/Commando/198d7604e3725ee88dceab9b5f296edb1b7580a5_discord.js@12.4.1+sqlite@4.0.15
   env-cmd: 10.1.0
   keyv: 4.0.3
-  pg: 8.4.1_pg@8.4.1
+  pg: 8.4.1
   sqlite: 4.0.15
   sqlite3: 5.0.0
   typeorm: 0.2.28
@@ -24,13 +24,13 @@ dependencies:
 devDependencies:
   '@types/config': 0.0.36
   '@types/keyv': 3.1.1
-  '@types/node': 14.11.10
+  '@types/node': 14.14.3
   '@types/sqlite3': 3.1.6
   cross-env: 7.0.2
-  nodemon: 2.0.5
+  nodemon: 2.0.6
   ts-node-dev: 1.0.0-pre.65_typescript@4.0.3
   typescript: 4.0.3
-lockfileVersion: 5.1
+lockfileVersion: 5.2
 packages:
   /@babel/code-frame/7.10.4:
     dependencies:
@@ -1074,21 +1074,17 @@ packages:
       integrity: sha512-EoAeT1MyFWh2BJvBDEFInY714bQBbHOAucqxqqhprhbBFqr+B7fuN5T9CJqUIGDzvwubnKKRqmSo6yPo0aSpNw==
   /@types/keyv/3.1.1:
     dependencies:
-      '@types/node': 14.11.2
+      '@types/node': 14.14.3
     dev: true
     resolution:
       integrity: sha512-MPtoySlAZQ37VoLaPcTHCu1RWJ4llDkULYZIzOYxlhxBqYPB0RsRlmMU0R6tahtFe27mIdkHV+551ZWV4PLmVw==
-  /@types/node/14.11.10:
+  /@types/node/14.14.3:
     dev: true
     resolution:
-      integrity: sha512-yV1nWZPlMFpoXyoknm4S56y2nlTAuFYaJuQtYRAOU7xA/FJ9RY0Xm7QOkaYMMmr8ESdHIuUb6oQgR/0+2NqlyA==
-  /@types/node/14.11.2:
-    dev: true
-    resolution:
-      integrity: sha512-jiE3QIxJ8JLNcb1Ps6rDbysDhN4xa8DJJvuC9prr6w+1tIh+QAbYyNF3tyiZNLDBIuBCf4KEcV2UvQm/V60xfA==
+      integrity: sha512-33/L34xS7HVUx23e0wOT2V1qPF1IrHgQccdJVm9uXGTB9vFBrrzBtkQymT8VskeKOxjz55MSqMv0xuLq+u98WQ==
   /@types/sqlite3/3.1.6:
     dependencies:
-      '@types/node': 14.11.2
+      '@types/node': 14.14.3
     dev: true
     resolution:
       integrity: sha512-OBsK0KIGUICExQ/ZvnPY4cKx5Kz4NcrVyGTIvOL5y4ajXu7r++RfBajfpGfGDmDVCKcoCDX1dO84/oeyeITnxA==
@@ -3171,7 +3167,7 @@ packages:
     dev: false
     resolution:
       integrity: sha512-ukW3iCfQaoxJkSPN+iK7KznTeqDGVJatAEuXsJERYHa9tn/KaT5lBdIyxQjLEVTzSkyjJEuQ17/vaEjrOauDkg==
-  /nodemon/2.0.5:
+  /nodemon/2.0.6:
     dependencies:
       chokidar: 3.4.2
       debug: 3.2.6
@@ -3189,7 +3185,7 @@ packages:
     hasBin: true
     requiresBuild: true
     resolution:
-      integrity: sha512-6/jqtZvJdk092pVnD2AIH19KQ9GQZAKOZVy/yT1ueL6aoV+Ix7a1lVZStXzvEh0fP4zE41DDWlkVoHjR6WlozA==
+      integrity: sha512-4I3YDSKXg6ltYpcnZeHompqac4E6JeAMpGm8tJnB9Y3T0ehasLa4139dJOcCrB93HHrUMsCrKtoAlXTqT5n4AQ==
   /nopt/1.0.10:
     dependencies:
       abbrev: 1.1.1
@@ -3447,7 +3443,7 @@ packages:
       integrity: sha512-WCtabS6t3c8SkpDBUlb1kjOs7l66xsGdKpIPZsg4wR+B3+u9UAum2odSsF9tnvxg80h4ZxLWMy4pRjOsFIqQpw==
   /pg-pool/3.2.1_pg@8.4.1:
     dependencies:
-      pg: 8.4.1_pg@8.4.1
+      pg: 8.4.1
     dev: false
     peerDependencies:
       pg: '>=8.0'
@@ -3469,7 +3465,7 @@ packages:
       node: '>=4'
     resolution:
       integrity: sha512-qTAAlrEsl8s4OiEQY69wDvcMIdQN6wdz5ojQiOy6YRMuynxenON0O5oCpJI6lshc6scgAY8qvJ2On/p+CXY0GA==
-  /pg/8.4.1_pg@8.4.1:
+  /pg/8.4.1:
     dependencies:
       buffer-writer: 2.0.0
       packet-reader: 1.0.0
@@ -3482,7 +3478,6 @@ packages:
     engines:
       node: '>= 8.0.0'
     peerDependencies:
-      pg: '*'
       pg-native: '>=2.0.0'
     peerDependenciesMeta:
       pg-native:
@@ -4718,10 +4713,10 @@ packages:
       node: '>=6'
     resolution:
       integrity: sha512-Ux4ygGWsu2c7isFWe8Yu1YluJmqVhxqK2cLXNQA5AcC3QfbGNpM7fu0Y8b/z16pXLnFxZYvWhd3fhBY9DLmC6Q==
-  github.com/discordjs/Commando/198d7604e3725ee88dceab9b5f296edb1b7580a5_discord.js@12.3.1+sqlite@4.0.15:
+  github.com/discordjs/Commando/198d7604e3725ee88dceab9b5f296edb1b7580a5_discord.js@12.4.1+sqlite@4.0.15:
     dependencies:
       common-tags: 1.8.0
-      discord.js: github.com/discordjs/discord.js/d2341654fe6ef87c6048bb5bf74c394062f3f618
+      discord.js: github.com/discordjs/discord.js/7ec0bd93b0d7788e8ccf5576add37f7198be3f72
       require-all: 3.0.0
       sqlite: 4.0.15
     dev: false
@@ -4735,10 +4730,9 @@ packages:
       discord.js: ^12.0.0
       sqlite: ^3.0.0
     resolution:
-      registry: 'https://registry.npmjs.org/'
       tarball: 'https://codeload.github.com/discordjs/Commando/tar.gz/198d7604e3725ee88dceab9b5f296edb1b7580a5'
     version: 0.11.0-dev
-  github.com/discordjs/discord.js/d2341654fe6ef87c6048bb5bf74c394062f3f618:
+  github.com/discordjs/discord.js/7ec0bd93b0d7788e8ccf5576add37f7198be3f72:
     dependencies:
       '@discordjs/collection': 0.1.6
       '@discordjs/form-data': 3.0.1
@@ -4753,9 +4747,8 @@ packages:
       node: '>=12.0.0'
     name: discord.js
     resolution:
-      registry: 'https://registry.npmjs.org/'
-      tarball: 'https://codeload.github.com/discordjs/discord.js/tar.gz/d2341654fe6ef87c6048bb5bf74c394062f3f618'
-    version: 12.3.1
+      tarball: 'https://codeload.github.com/discordjs/discord.js/tar.gz/7ec0bd93b0d7788e8ccf5576add37f7198be3f72'
+    version: 12.4.1
 specifiers:
   '@babel/core': ^7.12.3
   '@babel/plugin-transform-typescript': ^7.12.1
@@ -4764,26 +4757,26 @@ specifiers:
   '@keyv/mongo': ^1.1.0
   '@keyv/sqlite': ^2.0.2
   '@types/babel__core': ^7.1.10
-  '@types/config': ^0.0.36
-  '@types/keyv': ^3.1.1
-  '@types/node': ^14.11.10
-  '@types/sqlite3': ^3.1.6
+  '@types/config': 0.0.36
+  '@types/keyv': 3.1.1
+  '@types/node': 14.14.3
+  '@types/sqlite3': 3.1.6
   babel-core: ^6.26.3
   babel-node: ^0.0.1-security
   babel-plugin-dynamic-import-node: ^2.3.3
   babel-preset-es2015: ^6.24.1
   config: ^3.3.2
-  cross-env: ^7.0.2
+  cross-env: 7.0.2
   discord.js: discordjs/discord.js
   discord.js-commando: discordjs/Commando
   env-cmd: ^10.1.0
   keyv: ^4.0.3
-  nodemon: ^2.0.5
+  nodemon: 2.0.6
   pg: ^8.4.1
   sqlite: ^4.0.15
   sqlite3: ^5.0.0
   ts-node-dev: 1.0.0-pre.65
   typeorm: ^0.2.28
-  typescript: ^4.0.3
+  typescript: 4.0.3
   uwuifier: ^2.0.2
   vm2: ^3.9.2
