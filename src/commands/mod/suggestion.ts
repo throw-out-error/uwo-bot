@@ -1,6 +1,6 @@
 import { MessageEmbed } from "discord.js";
 import { CommandoClient, Command, CommandoMessage } from "discord.js-commando";
-import { Settings } from "../../config/database/settings";
+import { Guild } from "../../config/database/guild";
 import { isText } from "../../util";
 
 export default class InfoCommand extends Command {
@@ -19,20 +19,20 @@ export default class InfoCommand extends Command {
     async run(msg: CommandoMessage, args: string[]) {
         if (!args.length) return msg.reply("Please give a valid suggestion!");
 
-        const channelNames = (
-            await Settings.findOne({
+        const channels = (
+            await Guild.findOne({
                 where: { guildId: msg.guild.id },
             })
         )?.suggestionChannels;
 
-        if (!channelNames)
+        if (!channels)
             return msg.reply(
-                "The server admin has not set up a suggestion channel!",
+                "The server admin has not set up a suggestion channel!"
             );
 
         let channel = this.client.guilds.cache
             .get(msg.guild.id)
-            ?.channels.cache.find((x) => channelNames.includes(x.name));
+            ?.channels.cache.find((x) => channels.includes(x.name));
 
         if (!channel || !isText(channel))
             return msg.reply("The suggestion channel could not be found.");

@@ -1,6 +1,7 @@
 import { MessageEmbed } from "discord.js";
 import { CommandoClient, Command, CommandoMessage } from "discord.js-commando";
-import { Settings } from "../../config/database/settings";
+import { getGuild } from "../../config/database/util";
+import { Guild } from "../../config/database/guild";
 
 export default class InfoCommand extends Command {
     constructor(bot: CommandoClient) {
@@ -42,21 +43,10 @@ export default class InfoCommand extends Command {
             action,
             setting,
             value: newValue,
-        }: { action: string; setting: string; value?: string },
+        }: { action: string; setting: string; value?: string }
     ) {
         try {
-            let settings = await Settings.findOne({
-                guildId: msg.guild.id,
-            });
-            if (!settings) {
-                await Settings.insert({
-                    guildId: msg.guild.id,
-                    suggestionChannels: [],
-                });
-                settings = await Settings.findOne({
-                    guildId: msg.guild.id,
-                });
-            }
+            let settings = await getGuild(msg.guild);
 
             setting = setting.toLowerCase();
             action = action.toLowerCase();
@@ -69,18 +59,31 @@ export default class InfoCommand extends Command {
                         return msg.reply("Invalid setting value!");
                     switch (setting) {
                         case "sgchannel":
-                            await Settings.update(
+                            await Guild.update(
                                 {
                                     guildId: msg.guild.id,
                                 },
                                 {
-                                    suggestionChannels: value.split(","),
-                                },
+                                    suggestionChannels: value
+                                        .split(",")
+                                        .flatMap((v) =>
+                                            this.client.guilds.cache
+                                                .get(msg.guild.id)
+                                                ?.channels.cache.array()
+                                                .filter(
+                                                    (x) =>
+                                                        (v.startsWith("#")
+                                                            ? v.replace("#", "")
+                                                            : v) === x.name
+                                                )
+                                                .map((c) => c.id)
+                                        ),
+                                }
                             );
                             break;
                         default:
                             return msg.reply(
-                                `Cannot set unknown setting ${setting}`,
+                                `Cannot set unknown setting ${setting}`
                             );
                     }
                 case "get":
@@ -95,18 +98,18 @@ export default class InfoCommand extends Command {
                             break;
                         default:
                             return msg.reply(
-                                `Cannot get unknown setting ${setting}`,
+                                `Cannot get unknown setting ${setting}`
                             );
                     }
             }
             switch (action) {
                 case "set":
                     return msg.reply(
-                        `Succesfully modified setting ${setting} to value ${value}`,
+                        `Succesfully modified setting ${setting} to value ${value}`
                     );
                 case "get":
                     return msg.reply(
-                        `Current value for ${setting}: ${value || "not set"}`,
+                        `Current value for ${setting}: ${value || "not set"}`
                     );
             }
             return msg.reply("Invalid arguments!");

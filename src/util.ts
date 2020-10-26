@@ -20,3 +20,4 @@ export const getTarget = (
 
 export const isText = (channel: Channel): channel is TextChannel =>
     channel.type === "text";
+

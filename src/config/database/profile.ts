@@ -1,30 +1,16 @@
-import {
-    Entity,
-    PrimaryGeneratedColumn,
-    Column,
-    ObjectID,
-    ObjectIdColumn,
-    BaseEntity,
-} from "typeorm";
+import { Entity, Column, ManyToOne } from "typeorm";
+import { BaseEntity } from "./base";
+import { GuildUser } from "./user";
 
 @Entity()
 export class Profile extends BaseEntity {
-    @ObjectIdColumn()
-    @PrimaryGeneratedColumn()
-    id: ObjectID;
+    @Column("jsonb")
+    @ManyToOne(() => GuildUser)
+    user: GuildUser;
 
-    @Column()
-    guildId: string;
-
-    @Column()
-    userId: string;
-
-    @Column({ default: 0 })
-    xp: number;
-
-    @Column({ default: 1 })
-    level: number;
-
-    @Column("json")
+    @Column("jsonb")
     fields: Record<string, string>;
+
+    @Column({ default: false })
+    main: boolean;
 }

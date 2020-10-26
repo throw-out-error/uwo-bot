@@ -1,6 +1,7 @@
 import { ConnectionOptions, createConnection, getConnection } from "typeorm";
 import { Profile } from "./database/profile";
-import { Settings } from "./database/settings";
+import { GuildUser } from "./database/user";
+import { Guild } from "./database/guild";
 import { get, has } from "config";
 
 export type Config = {
@@ -29,7 +30,7 @@ export const getDatabase = async () => {
     } catch {
         return await createConnection({
             ...config.db,
-            entities: [Profile, Settings],
+            entities: [Profile, GuildUser, Guild],
             logging: true,
             synchronize: true,
         });

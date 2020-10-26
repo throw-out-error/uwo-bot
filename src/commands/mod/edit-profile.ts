@@ -1,5 +1,7 @@
 import { CommandoClient, Command, CommandoMessage } from "discord.js-commando";
+import { fetchProfile, getProfile } from "../../config/database/util";
 import { Profile } from "../../config/database/profile";
+import { MessageEmbed } from "discord.js";
 
 export default class ProfileCommand extends Command {
     constructor(bot: CommandoClient) {
@@ -16,24 +18,13 @@ export default class ProfileCommand extends Command {
 
     async run(msg: CommandoMessage, args: string[]) {
         const user = msg.author;
-        let profileData = await Profile.findOne({
-            where: { userId: user.id },
-        });
+        const gm = msg.guild.members.cache.get(user.id)!;
+        let profileData = await getProfile(user, gm);
 
-        if (!profileData)
-            profileData = (
-                await Profile.insert({
-                    guildId: msg.guild.id,
-                    userId: user.id,
-                    fields: {
-                        Bio: "Hello world.",
-                    },
-                })
-            ).raw;
         const fieldData = [...args.slice(0, 1), args.slice(1).join(" ")];
         if (fieldData.length < 2)
             return msg.reply(
-                "Not enough arguments! Key and JSON value required. Use the help command for more information.",
+                "Not enough arguments! Key and JSON value required. Use the help command for more information."
             );
         if (
             !fieldData[0] ||
@@ -42,18 +33,26 @@ export default class ProfileCommand extends Command {
             fieldData[1].trim() === ""
         )
             return msg.reply(
-                "Invalid key and value. Example: 'uwo edpr Bio Hello world.'",
+                "Invalid key and value. Example: 'uwo edpr Bio Hello world.'"
             );
         profileData![fieldData[0]] = fieldData[1];
         await Profile.update(
-            { userId: user.id },
+            { user: profileData.user },
             {
                 fields: {
                     ...profileData?.fields,
                     [fieldData[0]]: fieldData[1],
                 },
-            },
+            }
         );
-        return msg.reply("Updated your profile.");
+        return msg.channel.send(
+            new MessageEmbed(
+                await fetchProfile(
+                    user,
+                    gm,
+                    `Updated ${msg.author.username}'s ${fieldData[0]}.`
+                )
+            )
+        );
     }
 }

@@ -16,7 +16,7 @@ export default class UwuifyCommand extends Command {
 
     async run(msg: CommandoMessage, args: string) {
         const newMsg = await msg.channel.send(
-            this.uwuifier.uwuifySentence(args),
+            this.uwuifier.uwuifySentence(args)
         );
         await msg.delete();
         return newMsg;

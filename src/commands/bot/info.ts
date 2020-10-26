@@ -49,7 +49,7 @@ export default class InfoCommand extends Command {
                         name: "Memory Usage",
                         inline: true,
                         value: `${Math.round(
-                            process.memoryUsage().heapUsed / 1000000,
+                            process.memoryUsage().heapUsed / 1000000
                         )} MB`,
                     },
                     {
@@ -58,7 +58,7 @@ export default class InfoCommand extends Command {
                         value: `${cpuPercent}%`,
                     },
                 ],
-            }),
+            })
         );
     }
 }
