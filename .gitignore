@@ -10,9 +10,8 @@ logs
 
 # Environment
 *.env*
-config/production.json
-config/default.json
-
+config/*
+!config/template.yml
 # Misc
 .DS_Store
 *.sqlite

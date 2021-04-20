@@ -8,7 +8,7 @@ import * as babel from "@babel/core";
 import { CommandoClient, Command, CommandoMessage } from "discord.js-commando";
 import { NodeVM } from "vm2";
 import { config } from "../../config";
-import { get } from "config";
+
 export default class ProfileCommand extends Command {
     constructor(bot: CommandoClient) {
         super(bot, {
@@ -43,7 +43,7 @@ export default class ProfileCommand extends Command {
                 "url",
             ];
             // console.log(msg.author.id);
-            if (msg.author.id in (get("Bot.owners") as string[]))
+            if (msg.author.id in (config.toObject().bot.owners as string[]))
                 allowedModules.push("child_process");
             const vm = new NodeVM({
                 require: {
@@ -52,7 +52,8 @@ export default class ProfileCommand extends Command {
                 },
                 sandbox: {
                     _msg:
-                        msg.author.id in (get("Bot.owners") as string[])
+                        msg.author.id in
+                        (config.toObject().bot.owners as string[])
                             ? msg
                             : new Error("Access denied!"),
                 },
@@ -64,10 +65,7 @@ export default class ProfileCommand extends Command {
 
             // Provide the transform options, in particular the typescript plugin.
             let options = {
-                plugins: [
-                    "dynamic-import-node",
-                    "@babel/plugin-transform-typescript",
-                ],
+                plugins: [],
                 presets: [
                     [
                         "@babel/preset-env",
@@ -77,6 +75,7 @@ export default class ProfileCommand extends Command {
                             },
                             modules: "commonjs",
                         },
+                        "@babel/preset-typescript",
                     ],
                 ],
             };

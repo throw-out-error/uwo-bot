@@ -1,4 +1,3 @@
-import { MessageEmbed } from "discord.js";
 import { CommandoClient, Command, CommandoMessage } from "discord.js-commando";
 import { getGuild } from "../../config/database/util";
 import { Guild } from "../../config/database/guild";

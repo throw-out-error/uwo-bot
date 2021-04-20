@@ -3,10 +3,11 @@ import path from "path";
 import { config, getDatabase } from "./config/index";
 
 const bot: CommandoClient = new CommandoClient({
-    commandPrefix: `${config.prefix} `,
+    commandPrefix: `${config.toObject().bot.prefix} `,
     commandEditableDuration: 10,
-    invite: config.supportServerInvite,
-    owner: config.owners,
+    invite: config.toObject().bot.supportServerInvite,
+    owner: config.toObject().bot.owners,
+    intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS"],
 });
 
 bot.registry
@@ -34,4 +35,4 @@ bot.on("ready", async () => {
     }
 });
 
-bot.login(config.token).catch(console.log);
+bot.login(config.toObject().bot.token).catch(console.log);

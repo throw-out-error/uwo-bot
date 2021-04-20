@@ -1,0 +1,7 @@
+bot:
+    token: EXAMPLE_TOKEN
+    prefix: uwo
+    supportServerInvite: ""
+database:
+    type: postgres
+    url: postgresql://localhost/uwo-bot
