@@ -7,7 +7,7 @@ const bot: CommandoClient = new CommandoClient({
     commandEditableDuration: 10,
     invite: config.toObject().bot.supportServerInvite,
     owner: config.toObject().bot.owners,
-    intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS"],
+    intents: ["GUILDS", "GUILD_MESSAGES", "GUILD_MESSAGE_REACTIONS", "GUILD_PRESENCES"],
 });
 
 bot.registry
